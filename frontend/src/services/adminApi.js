@@ -1,0 +1,2 @@
+import { api, apiError, responseData } from './api'
+export const adminApi = { async createCategories(categories) { try { return responseData(await api.post('/admin/add_categories', { categories }, { userType: 'admin' })) } catch (e) { throw apiError(e) } }, async deleteCategories(categories) { try { return responseData(await api.delete('/admin/delete_categories', { data: { categories }, userType: 'admin' })) } catch (e) { throw apiError(e) } } }
