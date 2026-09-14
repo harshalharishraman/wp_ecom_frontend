@@ -672,6 +672,94 @@
       "norm_label": "app()"
     },
     {
+      "label": "CategoryCard.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/CategoryCard.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_categorycard",
+      "community": 20,
+      "community_name": "CategoryCard.jsx",
+      "norm_label": "categorycard.jsx"
+    },
+    {
+      "label": "Footer.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/Footer.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_footer",
+      "community": 21,
+      "community_name": "Footer.jsx",
+      "norm_label": "footer.jsx"
+    },
+    {
+      "label": "Loading.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/Loading.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_loading",
+      "community": 22,
+      "community_name": "Loading.jsx",
+      "norm_label": "loading.jsx"
+    },
+    {
+      "label": "Navbar.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/Navbar.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_navbar",
+      "community": 23,
+      "community_name": "Navbar.jsx",
+      "norm_label": "navbar.jsx"
+    },
+    {
+      "label": "ProductCard.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/ProductCard.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_productcard",
+      "community": 24,
+      "community_name": "ProductCard.jsx",
+      "norm_label": "productcard.jsx"
+    },
+    {
+      "label": "ProductGrid.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/ProductGrid.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_productgrid",
+      "community": 25,
+      "community_name": "ProductGrid.jsx",
+      "norm_label": "productgrid.jsx"
+    },
+    {
+      "label": "ProtectedRoute.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/ProtectedRoute.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_protectedroute",
+      "community": 26,
+      "community_name": "ProtectedRoute.jsx",
+      "norm_label": "protectedroute.jsx"
+    },
+    {
+      "label": "SearchBar.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/SearchBar.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_components_searchbar",
+      "community": 27,
+      "community_name": "SearchBar.jsx",
+      "norm_label": "searchbar.jsx"
+    },
+    {
       "label": "AuthContext.jsx",
       "file_type": "code",
       "source_file": "frontend/src/context/AuthContext.jsx",
@@ -773,6 +861,149 @@
       "community": 4,
       "community_name": "App.jsx",
       "norm_label": "main.jsx"
+    },
+    {
+      "label": "Cart.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Cart.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_cart",
+      "community": 33,
+      "community_name": "Cart.jsx",
+      "norm_label": "cart.jsx"
+    },
+    {
+      "label": "Checkout.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Checkout.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_checkout",
+      "community": 34,
+      "community_name": "Checkout.jsx",
+      "norm_label": "checkout.jsx"
+    },
+    {
+      "label": "Home.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Home.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_home",
+      "community": 35,
+      "community_name": "Home.jsx",
+      "norm_label": "home.jsx"
+    },
+    {
+      "label": "Login.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Login.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_login",
+      "community": 36,
+      "community_name": "Login.jsx",
+      "norm_label": "login.jsx"
+    },
+    {
+      "label": "ProductDetails.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/ProductDetails.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_productdetails",
+      "community": 37,
+      "community_name": "ProductDetails.jsx",
+      "norm_label": "productdetails.jsx"
+    },
+    {
+      "label": "pages/Products.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Products.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_products",
+      "community": 38,
+      "community_name": "pages/Products.jsx",
+      "norm_label": "pages/products.jsx"
+    },
+    {
+      "label": "Profile.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Profile.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_profile",
+      "community": 39,
+      "community_name": "Profile.jsx",
+      "norm_label": "profile.jsx"
+    },
+    {
+      "label": "Register.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/Register.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_register",
+      "community": 40,
+      "community_name": "Register.jsx",
+      "norm_label": "register.jsx"
+    },
+    {
+      "label": "AdminLogin.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/admin/AdminLogin.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_admin_adminlogin",
+      "community": 28,
+      "community_name": "AdminLogin.jsx",
+      "norm_label": "adminlogin.jsx"
+    },
+    {
+      "label": "Categories.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/admin/Categories.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_admin_categories",
+      "community": 29,
+      "community_name": "Categories.jsx",
+      "norm_label": "categories.jsx"
+    },
+    {
+      "label": "Dashboard.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/admin/Dashboard.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_admin_dashboard",
+      "community": 30,
+      "community_name": "Dashboard.jsx",
+      "norm_label": "dashboard.jsx"
+    },
+    {
+      "label": "admin/Products.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/admin/Products.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_admin_products",
+      "community": 31,
+      "community_name": "admin/Products.jsx",
+      "norm_label": "admin/products.jsx"
+    },
+    {
+      "label": "Subcategories.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/pages/admin/Subcategories.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "frontend_src_pages_admin_subcategories",
+      "community": 32,
+      "community_name": "Subcategories.jsx",
+      "norm_label": "subcategories.jsx"
     },
     {
       "label": "adminApi.js",
@@ -4042,5 +4273,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0ef9048c510649244138075bcbedca9cca73489c"
+  "built_at_commit": "57ff097fd7b42501ee55c9d1819587e05668252c"
 }
