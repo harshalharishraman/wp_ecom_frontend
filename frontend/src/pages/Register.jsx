@@ -1,1 +1,1 @@
-
+export default function Register() { return <main className="container page"><p className="eyebrow">Join Simplecart</p><h1>Create an account</h1><p>Save your favorites and check out faster.</p></main> }

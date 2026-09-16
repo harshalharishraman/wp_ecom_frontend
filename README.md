@@ -459,3 +459,65 @@ Do not invent endpoints. If the backend does not expose an operation, display a 
 8. Provide loading, error, empty, and retry states.
 9. Keep the UI simple and avoid unnecessary animation.
 10. Run `npm run build` and `npm run lint` before committing frontend changes.
+
+## Frontend design system
+
+The React storefront follows a clean blue-and-white visual language: white surfaces, deep blue promotional areas, bright blue actions, dark navy text, and light gray borders. Use these rules when creating or updating frontend pages and components.
+
+### Color palette
+
+| Usage | Color | Hex |
+| --- | --- | --- |
+| Primary button and action | Blue 600 | `#2563EB` |
+| Promo banner and dark blue areas | Blue 700 | `#1A46B6` |
+| Light blue background | Blue 50 | `#F0F7FF` |
+| Main background and surfaces | White | `#FFFFFF` |
+| Main text and headings | Gray 900 | `#0F172A` |
+| Body and secondary text | Gray 600 | `#475566` |
+| Borders | Gray 200 | `#E2E8F0` |
+| Soft backgrounds and footer | Gray 50 | `#F8FAFC` |
+
+Use `#2563EB` for primary buttons, active category tabs, links, and other key actions. Use `#1A46B6` for promotional banners. Keep the page and header backgrounds white. Use `#F8FAFC` for search/filter controls and other low-emphasis surfaces. Cards and form inputs should use `#E2E8F0` borders.
+
+### Product placeholder colors
+
+When a product image is unavailable, use one of these soft placeholder colors:
+
+- Light blue: `#DBEBFF`
+- Pale cyan: `#E6F2FA`
+- Pale purple: `#EDE6FF`
+- Pale orange: `#FFEDD6`
+
+### Typography
+
+Use Inter throughout the React app:
+
+```css
+body {
+  font-family: Inter, system-ui, sans-serif;
+}
+```
+
+Supported weights are Regular (`400`), Semi Bold (`600`), and Bold (`700`). Use the following sizes as the default scale:
+
+| Element | Size |
+| --- | ---: |
+| Logo | `24px` |
+| Hero heading | `34px` |
+| Page heading | `28px` |
+| Card title | `15px` |
+| Navigation text | `14px` |
+| Button text | `12–14px` |
+| Body text | `13–15px` |
+| Form labels | `12px` |
+| Helper text | `12px` |
+
+### Component usage
+
+- Keep headers and page backgrounds white.
+- Use bright blue primary buttons with white text and clear hover/focus states.
+- Use dark navy text for headings and gray secondary text for descriptions and metadata.
+- Use light gray borders for cards, inputs, dividers, and form controls.
+- Use the active blue category tab with inactive tabs on `#F8FAFC`.
+- Keep spacing, border radii, and button treatments consistent across pages.
+- Prefer simple, accessible layouts over unnecessary animation or decorative effects.

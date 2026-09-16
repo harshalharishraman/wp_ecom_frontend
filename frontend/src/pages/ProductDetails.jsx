@@ -1,1 +1,1 @@
-
+export default function ProductDetails() { return <main className="container page"><p className="eyebrow">Simplecart</p><h1>Product details</h1><p>This product page is ready for your catalog data.</p></main> }
