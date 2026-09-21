@@ -1,2 +1,17 @@
 import { api, apiError, responseData } from './api'
-export const cartApi = { async add(name, qty = 1) { try { return responseData(await api.post('/cus/cart/add', { name, qty })) } catch (e) { throw apiError(e) } }, async remove(name) { try { return responseData(await api.delete('/cus/cart/del', { data: { name } })) } catch (e) { throw apiError(e) } }, async checkout() { try { const data = responseData(await api.post('/cus/cart/check_out')); return data.reciept || data.receipt || data } catch (e) { throw apiError(e) } } }
+
+export const cartApi = {
+  async add(name, qty = 1) {
+    try { return responseData(await api.post('/cus/cart/add', { name, qty })) } catch (e) { throw apiError(e) }
+  },
+  async remove(name) {
+    try { return responseData(await api.delete('/cus/cart/del', { data: { name } })) } catch (e) { throw apiError(e) }
+  },
+  // The backend spells the receipt field "reciept"; keep that detail inside the service.
+  async checkout() {
+    try {
+      const data = responseData(await api.post('/cus/cart/check_out'))
+      return data.reciept || data.receipt || data
+    } catch (e) { throw apiError(e) }
+  },
+}
