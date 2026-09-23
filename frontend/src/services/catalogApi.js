@@ -1,11 +1,7 @@
 import { api, apiError, responseData } from './api'
 
-// The customer catalog endpoints currently return:
-//   categories:    { categories: ['Name', ...] }        (names only, no ids)
-//   subcategories: { sub_categories: ['Name', ...] }    (names only, no ids)
-//   products:      { products: [{ name, image_url }] }  (no id / price / stock)
-// This layer accepts either those shapes or richer objects ({ id, name, ... }) so it keeps
-// working if the backend later exposes ids and product details. It never invents ids or prices.
+// This layer accepts either simple names or richer objects ({ id, name, ... }) so it keeps
+// working with the existing backend envelope without inventing ids or prices.
 
 const asList = (data, keys) => {
   if (Array.isArray(data)) return data
@@ -35,8 +31,23 @@ const toProduct = (item, extra = {}) => {
     stock: hasValue(base.stock) && Number.isFinite(stock) ? stock : null,
     brand: typeof base.brand === 'string' && base.brand ? base.brand : null,
     description: [base.description, base.desc].find((v) => typeof v === 'string' && v) || null,
+    created_at: typeof base.created_at === 'string' && base.created_at ? base.created_at : null,
     ...extra,
   }
+}
+
+const cleanProductFilters = (filters = {}) => {
+  const params = new URLSearchParams()
+  const allowedSorts = new Set(['price_asc', 'price_desc', 'newest'])
+
+  if (hasValue(filters.category)) params.set('category', String(filters.category))
+  if (hasValue(filters.subcategory)) params.set('subcategory', String(filters.subcategory))
+  if (hasValue(filters.minPrice)) params.set('minPrice', String(filters.minPrice))
+  if (hasValue(filters.maxPrice)) params.set('maxPrice', String(filters.maxPrice))
+  if (hasValue(filters.search)) params.set('search', String(filters.search).trim())
+  if (allowedSorts.has(filters.sort)) params.set('sort', filters.sort)
+
+  return params
 }
 
 // The backend answers 400 when a category/subcategory is empty or unknown. Treat as "nothing here".
@@ -62,11 +73,17 @@ export const catalogApi = {
     } catch (e) { return emptyOn400(e) }
   },
 
-  async getProducts(categoryId, subcategoryId) {
+  async getProducts(categoryId, subcategoryId, filters = {}) {
     try {
-      const data = responseData(await api.get(`/cus/categories/${encodeURIComponent(categoryId)}/sub/${encodeURIComponent(subcategoryId)}/products`))
+      const params = cleanProductFilters(filters)
+      const query = params.toString()
+      const url = `/cus/categories/${encodeURIComponent(categoryId)}/sub/${encodeURIComponent(subcategoryId)}/products${query ? `?${query}` : ''}`
+      const data = responseData(await api.get(url))
       return asList(data, ['products']).map((p) => toProduct(p)).filter(Boolean)
-    } catch (e) { return emptyOn400(e) }
+    } catch (e) {
+      if (Object.keys(filters).length) throw apiError(e)
+      return emptyOn400(e)
+    }
   },
 
   // Loads categories -> subcategories -> products. Requests only run for entries that have
