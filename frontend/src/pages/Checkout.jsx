@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -7,78 +7,13 @@ import { formatPrice } from '../utils/product'
 import { CheckIcon } from '../components/Icons'
 import { cartApi } from '../services/cartApi'
 import { useCart } from '../context/CartContext'
-
-const money = (v) => (Number.isFinite(Number(v)) ? formatPrice(Number(v)) : '—')
-
+const rate = (category = '') => /electronics/i.test(category) ? 0.18 : 0
+const money = (v) => Number.isFinite(Number(v)) ? formatPrice(Number(v)) : '—'
+const deliveryDate = (value) => { if (!value) return 'the estimated delivery window'; const date = new Date(value + 'T00:00:00'); return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }) }
+const calculate = (items) => { const gross = items.reduce((s, i) => s + (Number(i.price) || 0) * i.qty, 0); const tax = items.reduce((s, i) => { const line = (Number(i.price) || 0) * i.qty; const r = rate(i.categoryName); return s + (r ? line - line / (1 + r) : 0) }, 0); const subtotal = gross - tax; const shipping = gross >= 500 ? 0 : 100; return { subtotal, tax, shipping, total: gross + shipping } }
 export default function Checkout() {
-  const { items, count, clear } = useCart()
-  const [receipt, setReceipt] = useState(null)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
-
+  const { items, count, clear } = useCart(); const [receipt, setReceipt] = useState(null); const [busy, setBusy] = useState(false); const [error, setError] = useState(''); const estimate = useMemo(() => calculate(items), [items])
   if (!receipt && items.length === 0) return <Navigate to="/cart" replace />
-
-  const placeOrder = async () => {
-    setBusy(true)
-    setError('')
-    try {
-      setReceipt(await cartApi.checkout())
-      clear()
-    } catch (e) {
-      setError(e.message)
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  return (
-    <div className="site-shell">
-      <Navbar />
-      <main className="container page">
-        {receipt ? (
-          <div className="receipt">
-            <span className="success-mark"><CheckIcon width={26} height={26} /></span>
-            <h1>Order placed</h1>
-            {receipt.order_id != null && <p className="muted">Order #{receipt.order_id}</p>}
-            {receipt.shipping_address && <p>Delivering to <strong>{receipt.shipping_address}</strong></p>}
-            {Array.isArray(receipt.products) && (
-              <ul className="receipt-items">
-                {receipt.products.map((p) => <li key={p.name}><span>{p.name}</span><span>× {p.quantity}</span></li>)}
-              </ul>
-            )}
-            <div className="receipt-totals">
-              <p><span>Subtotal</span><span>{money(receipt.cost)}</span></p>
-              <p><span>GST</span><span>{money(receipt.gst)}</span></p>
-              <p><span>Shipping</span><span>{money(receipt.shipping_cost)}</span></p>
-              <p className="total"><span>Total</span><span>{money(receipt.final_cost)}</span></p>
-            </div>
-            <Link className="button" to="/dashboard">Continue shopping</Link>
-          </div>
-        ) : (
-          <>
-            <h1>Checkout</h1>
-            <div className="cart-layout">
-              <ul className="cart-list">
-                {items.map((item) => (
-                  <li className="cart-row" key={item.name}>
-                    <ProductImage product={item} className="thumb" />
-                    <div className="cart-info"><h2>{item.name}</h2><p className="muted">Quantity: {item.qty}</p></div>
-                  </li>
-                ))}
-              </ul>
-              <aside className="summary">
-                <h2>Order</h2>
-                <p className="summary-line"><span>Items</span><strong>{count}</strong></p>
-                <p className="muted">We'll calculate the total, GST and shipping when you place the order, and deliver to the shipping address on your account.</p>
-                {error && <p className="notice error" role="alert">{error}</p>}
-                <button className="button" type="button" onClick={placeOrder} disabled={busy}>{busy ? 'Placing order…' : 'Place order'}</button>
-                <Link className="text-link" to="/cart">Back to cart</Link>
-              </aside>
-            </div>
-          </>
-        )}
-      </main>
-      <Footer />
-    </div>
-  )
+  const placeOrder = async () => { setBusy(true); setError(''); try { setReceipt(await cartApi.checkout()); clear() } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  return <div className="site-shell"><Navbar /><main className="container page">{receipt ? <div className="receipt"><span className="success-mark"><CheckIcon width={26} height={26} /></span><h1>Order placed</h1>{receipt.order_id != null && <p className="muted">Order #{receipt.order_id}</p>}<p>Delivering to <strong>{receipt.shipping_address || 'your saved address'}</strong></p><div className="notice success"><strong>Delivery estimate</strong><br />{deliveryDate(receipt.delivery_from)} – {deliveryDate(receipt.delivery_to)}<br />between {receipt.delivery_window || '9:00 AM - 7:00 PM'}</div><ul className="receipt-items">{(receipt.products || []).map((p) => <li key={p.id || p.name}><span>{p.name} × {p.quantity}</span><span>{money(p.line_total)}</span></li>)}</ul><div className="receipt-totals"><p><span>Before tax</span><span>{money(receipt.cost)}</span></p><p><span>Tax</span><span>{money(receipt.gst)}</span></p><p><span>Delivery</span><span>{Number(receipt.shipping_cost) ? money(receipt.shipping_cost) : 'Free'}</span></p><p className="total"><span>Total</span><span>{money(receipt.final_cost)}</span></p></div><Link className="button" to="/dashboard">Continue shopping</Link></div> : <><h1>Checkout</h1><div className="cart-layout"><ul className="cart-list">{items.map((item) => <li className="cart-row" key={item.name}><ProductImage product={item} className="thumb" /><div className="cart-info"><h2>{item.name}</h2><p className="muted">{item.qty} × {money(item.price)} · Tax {rate(item.categoryName) * 100}%</p></div><strong>{money(Number(item.price) * item.qty)}</strong></li>)}</ul><aside className="summary"><h2>Order summary</h2><p className="summary-line"><span>Items</span><strong>{count}</strong></p><p className="summary-line"><span>Before tax</span><strong>{money(estimate.subtotal)}</strong></p><p className="summary-line"><span>Tax</span><strong>{money(estimate.tax)}</strong></p><p className="summary-line"><span>Delivery</span><strong>{estimate.shipping ? money(estimate.shipping) : 'Free'}</strong></p><p className="summary-line total"><span>Total</span><strong>{money(estimate.total)}</strong></p><p className="muted">Listed prices include applicable tax. Delivery in 3–5 days, between 9:00 AM and 7:00 PM. Orders of 500 or more qualify for free delivery.</p>{error && <p className="notice error" role="alert">{error}</p>}<button className="button" type="button" onClick={placeOrder} disabled={busy}>{busy ? 'Placing order…' : 'Place order'}</button><Link className="text-link" to="/cart">Back to cart</Link></aside></div></>}</main><Footer /></div>
 }

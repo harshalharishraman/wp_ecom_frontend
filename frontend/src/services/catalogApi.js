@@ -1,12 +1,5 @@
 import { api, apiError, responseData } from './api'
 
-// The customer catalog endpoints currently return:
-//   categories:    { categories: ['Name', ...] }        (names only, no ids)
-//   subcategories: { sub_categories: ['Name', ...] }    (names only, no ids)
-//   products:      { products: [{ name, image_url }] }  (no id / price / stock)
-// This layer accepts either those shapes or richer objects ({ id, name, ... }) so it keeps
-// working if the backend later exposes ids and product details. It never invents ids or prices.
-
 const asList = (data, keys) => {
   if (Array.isArray(data)) return data
   for (const key of keys) if (Array.isArray(data?.[key])) return data[key]
