@@ -4,21 +4,6 @@ This repository contains the React + Vite frontend for the e-commerce applicatio
 
 The frontend owns the user interface, routing, browser authentication state, API calls, loading/error states, and customer/admin workflows.
 
-## Current implementation
-
-The current development branch replaces the earlier placeholder storefront with a working customer shopping flow:
-
-- Customer login and registration with persisted browser sessions.
-- Protected dashboard, catalog browsing, product details, profile, cart, and checkout routes.
-- Catalog loading from categories -> subcategories -> products, with cached data, category filters, featured picks, and client-side product search.
-- Product cards and details use only fields returned by the API, including optional image, price, stock, brand, and description fields.
-- Add/remove cart operations are backed by the API, with a per-customer browser-side cart because the backend has no cart-read endpoint.
-- Checkout receipt rendering for order, product, shipping, GST, and total fields, including the backend's `reciept` spelling.
-- Shared Axios authentication headers, customer access-token refresh/retry, normalized API errors, and loading/empty/error/retry states.
-- A refreshed blue-and-white responsive storefront UI with reusable navigation, auth, search, product, scroller, icon, and feedback components.
-
-The old `Home` page and admin page files remain in the source tree for follow-up work, but they are not currently registered as routes. The active application is customer-focused; admin API support is limited to the functions implemented in `src/services/adminApi.js`.
-
 ## Running the frontend
 
 ```powershell
@@ -33,7 +18,7 @@ The backend should run separately on its own port. The current frontend configur
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Create `frontend/.env` with the variable above when setting up a new machine. The previous branch-provided `.env.example` file is no longer present. Never commit `.env` or secrets.
+Copy `.env.example` to `.env` when setting up a new machine. Never commit `.env` or secrets.
 
 Useful commands:
 
@@ -60,11 +45,12 @@ frontend/
 │   ├── index.css
 │   └── main.jsx
 ├── .env
+├── .env.example
 ├── package.json
 └── vite.config.js
 ```
 
-`src/App.jsx` now composes the providers and route table; page UI lives in the page and component modules. `src/pages/Home.jsx` and `src/pages/admin/*` are retained as unregistered/legacy screens until their corresponding flows are wired into the application.
+The component and page files currently created under `src/components`, `src/pages`, and `src/pages/admin` are placeholders. They should be implemented one at a time. The current working UI remains in `src/App.jsx` until that refactor is completed.
 
 ## Application control flow
 
@@ -96,12 +82,11 @@ User clicks a Link
   → page displays loading, data, empty, or error state
 ```
 
-Customer routes (all except auth screens require a customer session):
+Customer routes:
 
 ```text
-/                         Redirects to `/dashboard`
-/dashboard                Authenticated storefront dashboard
-/products                 Legacy product-list screen (not currently linked)
+/                         Home
+/products                 Product listing
 /products/:id             Product details
 /cart                     Cart
 /checkout                 Checkout
@@ -110,19 +95,27 @@ Customer routes (all except auth screens require a customer session):
 /profile                  Customer profile
 ```
 
-There are currently no active admin routes in `App.jsx`.
+Admin routes:
 
-Protected routes must check customer authentication before rendering. Unauthenticated customers are sent to `/login`. Admin route protection is not active because no admin routes are currently registered.
+```text
+/admin/login              Admin login
+/admin                    Admin dashboard
+/admin/categories         Category management
+/admin/subcategories      Subcategory management
+/admin/products           Product management
+```
+
+Protected routes must check authentication before rendering. Unauthenticated customers should be sent to `/login`; unauthenticated admins should be sent to `/admin/login`.
 
 ### 3. Authentication flow
 
-`AuthContext.jsx` owns browser authentication state for the customer flow.
+`AuthContext.jsx` owns browser authentication state.
 
 ```text
 Login form
   → AuthContext.login()
   → authApi.login()
-  → api.js sends POST /cus/login
+  → api.js sends POST /cus/login or POST /admin/login
   → access and refresh tokens are stored
   → AuthContext exposes the logged-in state
   → protected routes become available
@@ -373,7 +366,7 @@ Provides:
 }
 ```
 
-It stores authentication state and user details in local storage, exposes login/register/logout actions, and keeps customer and admin token keys separate. Access-token refresh and request retry are handled by `src/services/api.js`.
+It stores authentication state, persists tokens between refreshes, and exposes actions to pages and components.
 
 ### `src/context/CartContext.jsx`
 
